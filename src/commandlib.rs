@@ -114,6 +114,33 @@ pub fn rank(level: u64) -> String {
     return ret_val.to_string();
 }
 
+pub fn level_ansi_color(level: u64) -> String {
+    match level {
+        1 => "37",
+        2 => "32",
+        3 => "36",
+        4 => "33",
+        5 => "33",
+        6 => "31",
+        7 => "32",
+        8 => "34",
+        9 => "35",
+        10 => "30",
+        11 => "31",
+        12 => "36",
+        13 => "35",
+        14 => "35",
+        15 => "32",
+        16 => "35",
+        17 => "30",
+        18 => "34",
+        19 => "30",
+        20 => "46;31",
+        21 => "47;33",
+        _ => "30"
+    }.to_string()
+}
+
 ///Gets a level from an amount of xp
 pub fn level(xp: u64) -> u64 {
     let thresholds = vec![

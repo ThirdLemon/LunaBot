@@ -44,10 +44,10 @@ async fn leaderboard(ctx: Context, msg: Message, args: Vec<String>){
     
     leaderboard.sort_by(|a, b| b.xp.cmp(&a.xp));
 
-    let skip = if let Some(page) = args.first() {if let Ok(pageno) = page.parse::<usize>(){pageno}else{1}}else{1};
+    let skip = if let Some(page) = args.first() {if let Ok(pageno) = page.parse::<usize>(){pageno.min(((leaderboard.len() as f64)/20.0) as usize)}else{1}}else{1};
 
     embed(ctx, msg.channel_id, "XP LEADERBOARD".to_owned(), 
-        leaderboard.iter().skip((skip - 1)*20).take(20).map(|user| format!("{}: {} xp\n", user.name.to_owned(), user.xp)).collect::<String>(),
+        format!("```ansi\n{}```", leaderboard.iter().skip((skip - 1)*20).take(20).map(|user| format!("\u{001b}[1;{}m{}: {} xp\u{001b}[0m\n", level_ansi_color(user.level), user.name.to_owned(), user.xp)).collect::<String>()),
         Some(format!("Page {} of {}", skip, ((leaderboard.len() as f64)/20.0).ceil()))).await;
 }
 

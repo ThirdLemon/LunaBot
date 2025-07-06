@@ -214,6 +214,8 @@ impl EventHandler for DiscordHandler {
                     data.last_timestamp = timestamp;
                 }
             }
+            //scrape usernames on boot
+            /*
             for (userid, _) in &data.data.to_owned() {
                 if let Some(userdata) = data.data.get_mut(&userid) {
                     if let Ok(user) = ctx.http.get_user(UserId::from(userid.to_owned())).await {
@@ -221,6 +223,7 @@ impl EventHandler for DiscordHandler {
                     }
                 }
             }
+            */
         }
 
 
