@@ -17,6 +17,17 @@ pub async fn get_user_data(ctx: Context, user_id: u64) -> UserData {
     return get_user_data_lock(ctx).await.read().await.data[&user_id].clone();
 }
 
+///Gets the data for a specific user by name (I'm not happy with this yet
+pub async fn get_user_data_from_name(ctx: Context, name: String) -> Option<UserData> {
+    for user in get_user_data_lock(ctx).await.read().await.data.values() {
+        if user.name.to_uppercase() == name.to_uppercase() {
+            return Some(user.to_owned());
+        }
+    }
+
+    return None;
+}
+
 ///Lets you store arbitrary data as a string on a user. Returns whether it was successful.
 pub async fn set_user_storage(ctx: Context, user_id: u64, key: String, value: String) -> bool {
     if let Some(data) = get_user_data_lock(ctx).await.write().await.data.get_mut(&user_id) {

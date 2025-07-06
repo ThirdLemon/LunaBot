@@ -61,14 +61,14 @@ async fn xpcooldown(ctx: Context, msg: Message, args: Vec<String>) {
 }
 
 async fn xp(ctx: Context, msg: Message, args: Vec<String>) {
-    
+
 
     let data = get_user_data(ctx.to_owned(), msg.author.id.into()).await;
 
     let mut until_next_level = 0;
     for threshold in get_level_thresholds() {
         if data.xp < threshold {
-            until_next_level = threshold - data.xp;
+            until_next_level = until_next_level.min(threshold - data.xp);
         }
     }
     let out = format!("{} has **{}** XP. {}'s next level is in **{}** XP.", data.name, data.xp, data.name, until_next_level);
