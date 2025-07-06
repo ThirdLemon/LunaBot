@@ -1,4 +1,4 @@
-use serenity::all::{Channel, Timestamp};
+use serenity::all::{Channel, Timestamp, UserId};
 use serenity::futures::StreamExt;
 use serenity::{async_trait};
 use serenity::model::channel::Message;
@@ -214,7 +214,15 @@ impl EventHandler for DiscordHandler {
                     data.last_timestamp = timestamp;
                 }
             }
+            for (userid, _) in &data.data.to_owned() {
+                if let Some(userdata) = data.data.get_mut(&userid) {
+                    if let Ok(user) = ctx.http.get_user(UserId::from(userid.to_owned())).await {
+                        userdata.name = user.display_name().to_owned();
+                    }
+                }
+            }
         }
+
 
         self.update(ctx).await;
     }

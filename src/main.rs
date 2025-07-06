@@ -27,8 +27,8 @@ async fn main() {
         if let Ok(_) = file.read_to_string(&mut contents) {
             if let Ok(d) = serde_json::from_str(&contents) {
                 data = d;
-            }else {
-                println!("error parsing json");
+            } else {
+                println!("error parsing json: {:?}", serde_json::from_str::<Data>(&contents));
                 return;
             }
         } else {

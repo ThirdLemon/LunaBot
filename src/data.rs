@@ -11,7 +11,7 @@ impl TypeMapKey for GlobalData {
     type Value = Arc<RwLock<Data>>;
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Data {
     pub data: HashMap<u64, UserData>,
     pub last_timestamp: Timestamp,
@@ -23,7 +23,7 @@ impl Data {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct UserData {
     pub id: u64,
     pub name: String,
@@ -63,7 +63,7 @@ pub async fn update_level(ctx: Context, user_data: &mut UserData, channel: Guild
         if let Ok(member) = ctx.http.get_member(guild.id, user_data.id.into()).await {
             if level(user_data.xp) != user_data.level {
                 remove_role(ctx.clone(), member.clone(), guild.id, &rank(user_data.level)).await;
-                if rank(user_data.level) != rank(level(user_data.xp)) && rank(level(user_data.xp)) != String::new() {
+                if rank(user_data.level) < rank(level(user_data.xp)) && rank(level(user_data.xp)) != String::new() {
                     if let Ok(current_user) = ctx.http.get_current_user().await {
                         if current_user.id != user_data.id {
                             if let Err(why) = channel.say(&ctx.http, format!("GG <@{}>, you just advanced to **{}** !", user_data.id, rank(level(user_data.xp)))).await {
