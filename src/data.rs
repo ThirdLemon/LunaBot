@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, fs::File, io::Write, sync::Arc};
-use serenity::all::{GuildChannel, Timestamp};
+use serenity::all::{GuildChannel, Timestamp, UserId};
 
 use serenity::prelude::*;
 
@@ -64,8 +64,8 @@ pub async fn update_level(ctx: Context, user_data: &mut UserData, channel: Guild
             if level(user_data.xp) != user_data.level {
                 remove_role(ctx.clone(), member.clone(), guild.id, &rank(user_data.level)).await;
                 if rank(user_data.level) < rank(level(user_data.xp)) && rank(level(user_data.xp)) != String::new() {
-                    if let Ok(current_user) = ctx.http.get_current_user().await {
-                        if current_user.id != user_data.id {
+                    if let Ok(user) = ctx.http.get_user(UserId::from(user_data.id)).await{
+                        if !user.bot {
                             if let Err(why) = channel.say(&ctx.http, format!("GG <@{}>, you just advanced to **{}** !", user_data.id, rank(level(user_data.xp)))).await {
                                 println!("Error sending message: {why:?}");
                             }
