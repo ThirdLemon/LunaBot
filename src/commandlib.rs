@@ -114,36 +114,36 @@ pub fn rank(level: u64) -> String {
     return ret_val.to_string();
 }
 
+
 pub fn level_ansi_color(level: u64) -> String {
     match level {
-        1 => "37",
+        1 => "36",
         2 => "32",
-        3 => "36",
-        4 => "33",
-        5 => "33",
-        6 => "31",
-        7 => "32",
-        8 => "34",
-        9 => "35",
-        10 => "30",
-        11 => "31",
-        12 => "36",
-        13 => "35",
-        14 => "35",
-        15 => "32",
-        16 => "35",
-        17 => "30",
-        18 => "34",
-        19 => "30",
-        20 => "46;31",
+        3 => "42;32",
+        4 => "40;33",
+        5 => "41;37",
+        6 => "40;31",
+        7 => "47;32",
+        8 => "40;34",
+        9 => "45;37",
+        10 => "42;30",
+        11 => "41;30",
+        12 => "47;36",
+        13 => "42;35",
+        14 => "45;30",
+        15 => "40;32",
+        16 => "47;35",
+        17 => "42;33",
+        18 => "42;34",
+        19 => "42;37",
+        20 => "40;35",
         21 => "47;33",
-        _ => "30"
+        _ => "37"
     }.to_string()
 }
 
-///Gets a level from an amount of xp
-pub fn level(xp: u64) -> u64 {
-    let thresholds = vec![
+pub fn get_level_thresholds() -> Vec<u64>{
+    return vec![
         10,
         50,
         200,
@@ -166,6 +166,11 @@ pub fn level(xp: u64) -> u64 {
         105000,
         130000
     ];
+}
+
+///Gets a level from an amount of xp
+pub fn level(xp: u64) -> u64 {
+    let thresholds = get_level_thresholds();
 
     let mut ret_val = 0;
 

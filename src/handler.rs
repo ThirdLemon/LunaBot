@@ -73,52 +73,6 @@ impl EventHandler for DiscordHandler {
             if let Err(why) = msg.channel_id.say(&ctx.http, "Pong!").await {
                 println!("Error sending message: {why:?}");
             }
-        } else if msg.content == "!xp" {
-            let mut out = None;
-
-            let user_id = u64::from(msg.author.id);
-            let data_lock = {
-                let data_read = ctx.data.read().await;
-                data_read.get::<GlobalData>().expect("Expected Data in TypeMap.").clone()
-            };
-
-            if data_lock.read().await.data.contains_key(&user_id) {
-                out = Some(format!("{}", data_lock.read().await.data[&user_id].xp));
-            }
-
-            // Sending a message can fail, due to a network error, an authentication error, or lack
-            // of permissions to post in the channel, so log to stdout when some error happens,
-            // with a description of it.
-            if out.is_some() {
-                if let Err(why) = msg.channel_id.say(&ctx.http, format!("{} has {} XP", msg.author.display_name(), out.unwrap().as_str())).await {
-                    println!("Error sending message: {why:?}");
-                }
-            } else {
-                if let Err(why) = msg.channel_id.say(&ctx.http, format!("{} has no XP", msg.author.display_name())).await {
-                    println!("Error sending message: {why:?}");
-                }
-            }
-        } else if msg.content == "!xpcooldown" {
-            let mut out = None;
-
-            let user_id = u64::from(msg.author.id);
-            let data_lock = {
-                let data_read = ctx.data.read().await;
-                data_read.get::<GlobalData>().expect("Expected Data in TypeMap.").clone()
-            };
-
-            if let Some(data) = data_lock.read().await.data.get(&user_id) {
-                out = Some(format!("{}'s XP Cooldown Expires in {} seconds", msg.author.name, 60 - (msg.timestamp.unix_timestamp() - data.last_message_timestamp.unix_timestamp())));
-            }
-
-            // Sending a message can fail, due to a network error, an authentication error, or lack
-            // of permissions to post in the channel, so log to stdout when some error happens,
-            // with a description of it.
-            if out.is_some() {
-                if let Err(why) = msg.channel_id.say(&ctx.http, format!("{}", out.unwrap().as_str())).await {
-                    println!("Error sending message: {why:?}");
-                }
-            }
         }
         {
             let changed;
