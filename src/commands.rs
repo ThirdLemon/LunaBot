@@ -47,7 +47,7 @@ async fn leaderboard(ctx: Context, msg: Message, args: Vec<String>){
     let skip = if let Some(page) = args.first() {if let Ok(pageno) = page.parse::<usize>(){pageno}else{1}}else{1};
 
     embed(ctx, msg.channel_id, "XP LEADERBOARD".to_owned(), 
-        leaderboard.iter().skip((skip - 1)*20).take(20).map(|user| format!("### {}: {} xp\n", user.name.to_owned(), user.xp)).collect::<String>(),
+        leaderboard.iter().skip((skip - 1)*20).take(20).map(|user| format!("{}: {} xp\n", user.name.to_owned(), user.xp)).collect::<String>(),
         Some(format!("Page {} of {}", skip, ((leaderboard.len() as f64)/20.0).ceil()))).await;
 }
 
