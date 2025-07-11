@@ -17,7 +17,7 @@ pub async fn get_user_data(ctx: Context, user_id: u64) -> UserData {
     return get_user_data_lock(ctx).await.read().await.data[&user_id].clone();
 }
 
-///Gets the data for a specific user by name (I'm not happy with this yet
+///Gets the data for a specific user by name (I'm not happy with this yet)
 pub async fn get_user_data_from_name(ctx: Context, name: String) -> Option<UserData> {
     for user in get_user_data_lock(ctx).await.read().await.data.values() {
         if user.name.to_uppercase() == name.to_uppercase() {
@@ -87,7 +87,7 @@ pub async fn get_nickname(ctx: Context, user: UserId, guild_id: GuildId) -> Opti
     return None;
 }
 
-///Gets a rank's name from an amount of XP
+///Gets a rank's name for a level
 pub fn rank(level: u64) -> String {
     let thresholds = vec![
         ("", 0),
