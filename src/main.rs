@@ -7,6 +7,7 @@ mod data;
 mod handler;
 mod commands;
 mod commandlib;
+mod lemon;
 
 use crate::data::*;
 
